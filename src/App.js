@@ -45,7 +45,7 @@ function App() {
       <section className="top-and-bottom-container">
         <article className="top">
           <div className="top__info">
-            <p>{data.name}</p>
+            <p className="top__info__name">{data.name}</p>
           </div>
           <div className="top__info">
             {data.main ? <h1>{data.main.temp.toFixed()}°C</h1> : null}
