@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 function App() {
@@ -8,8 +8,7 @@ function App() {
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=7c2d2acdc8a5c07f1b4556c6d79c46c7`;
 
   const searchLocation = () => {
-    axios
-      .get(url)
+    axios.get(url)
       .then((response) => {
         setData(response.data);
         console.log(data);
@@ -17,10 +16,7 @@ function App() {
       .catch((error) => {
         console.error(error);
       });
-  };
-
-  const handleSearchClick = () => {
-    searchLocation();
+    setLocation("")
   };
 
   const handleKeyPress = (e) => {
@@ -30,50 +26,50 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <div className="search">
+    <main className="main">
+      <section className="search">
         <input
-          placeholder="location"
+          placeholder="Enter City Name, for example Paris"
           type="text"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           onKeyPress={handleKeyPress}
+          className="search__input"
         />
-        <button onClick={handleSearchClick}>Search</button>
-      </div>
-      <div className="container">
-        <div className="top">
-          <div className="location">
+        <button
+         onClick={() => searchLocation("")}
+         className="search__btn"
+         >Search</button>
+      </section>
+
+      <section className="top-and-bottom-container">
+        <article className="top">
+          <div className="top__info">
             <p>{data.name}</p>
           </div>
-          <div className="temp">
-            {data.main ? <h1>{data.main.temp}</h1> : null}
+          <div className="top__info">
+            {data.main ? <h1>{data.main.temp.toFixed()}°C</h1> : null}
           </div>
-          <div className="description">
-            <p>Clouds</p>
-          </div>
-        </div>
+        </article>
 
-        {data.main ? 
-        <div className="bottom">
-          <div className="feels">
-            <h1>{data.main.feels_like}</h1>
-            <p>feels like</p>
-          </div>
-          <div className="humidity">
-           <h1>{data.main.humidity}</h1>
-            <p>humidity</p>
+        {data.main ?
+          <article className="bottom">
+            <div className="bottom__info">
+              <p>Feels like:</p>
+              <p>{data.main.feels_like.toFixed()}°C</p>
+            </div>
+            <div className="bottom__info">
+              <p>Humidity:</p>
+              <p>{data.main.humidity}%</p>
+            </div>
+            <div className="bottom__info">
+              <p>Wind:</p>
+              <p>{data.wind.speed.toFixed()} km/h</p>
+            </div>
+          </article> : null}
 
-          </div>
-          <div className="wind">
-            <h1>{data.main.speed} km/h</h1>
-            <p>Wind</p>
-
-          </div>
-        </div> : null}
-        
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
 
